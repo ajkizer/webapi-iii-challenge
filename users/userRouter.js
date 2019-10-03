@@ -22,17 +22,16 @@ router.post("/:id/posts", validatePost, validateUserId, async (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
-  User.get(req.query)
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(500).json({
-        message: "Error retrieving data"
-      });
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.get(req.query);
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Error retrieving data"
     });
+  }
 });
 
 router.get("/:id", validateUserId, (req, res) => {
